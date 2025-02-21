@@ -1,0 +1,17 @@
+[server]
+nginx
+
+[db]
+mariadb
+
+[site]
+wordpress
+
+[web:children]
+server
+db
+site
+
+[all:vars]
+ansible_ssh_user=root
+ansible_ssh_pass=ansible
