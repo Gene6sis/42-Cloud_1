@@ -1,4 +1,0 @@
----
-- import_playbook: web.yml
-- import_playbook: db.yml
-- import_playbook: server.yml
