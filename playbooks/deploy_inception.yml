@@ -1,0 +1,6 @@
+- name: Déployer le projet Inception sur le serveur
+  hosts: web
+  become: yes
+
+  roles:
+    - inception_stack

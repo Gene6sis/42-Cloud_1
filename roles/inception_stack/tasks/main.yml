@@ -1,0 +1,25 @@
+- name: Créer le dossier du projet sur le serveur
+  file:
+    path: /opt/inception
+    state: directory
+
+- name: Copier les fichiers du projet Inception sur le serveur
+  copy:
+    src: "{{ role_path }}/files/"
+    dest: /opt/inception/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy .env file
+  copy:
+    src: .env
+    dest: /opt/inception/.env
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Lancer le docker-compose
+  command: docker compose up -d
+  args:
+    chdir: /opt/inception
