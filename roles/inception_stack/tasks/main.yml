@@ -1,9 +1,20 @@
-- name: Créer le dossier du projet sur le serveur
+---
+- name: Create project directory on server
   file:
     path: /opt/inception
     state: directory
+    mode: 0755
 
-- name: Copier les fichiers du projet Inception sur le serveur
+- name: Create data directories for volumes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - /opt/inception/data/mariadb
+    - /opt/inception/data/wordpress
+
+- name: Copy project files to server
   copy:
     src: "{{ role_path }}/files/"
     dest: /opt/inception/
@@ -13,13 +24,15 @@
 
 - name: Copy .env file
   copy:
-    src: .env
+    src: "{{ role_path }}/files/.env"
     dest: /opt/inception/.env
     mode: '0644'
     owner: root
     group: root
 
-- name: Lancer le docker-compose
+- name: Build and start containers
   command: docker compose up -d
   args:
     chdir: /opt/inception
+  async: 600  # 10 minutes timeout
+  poll: 10    # Check every 10 seconds

@@ -7,22 +7,22 @@ http {
     server {
         listen 443 ssl;
         listen [::]:443 ssl;
-	
-        server_name adbenmc.works;  # Nouveau domaine ici
+
+        server_name {{ domain_name }};
 
         root /var/www/html;
         index index.php index.html index.htm;
 
-        ssl on;
-        ssl_certificate /etc/nginx/ssl/adbenmc.works.pem;  # Nouveau certificat ici
-        ssl_certificate_key /etc/nginx/ssl/adbenmc.works.key;  # Nouvelle clé ici
+        ssl_certificate /etc/nginx/ssl/{{ domain_name }}.crt;
+        ssl_certificate_key /etc/nginx/ssl/{{ domain_name }}.key;
+        ssl_trusted_certificate /etc/nginx/ssl/{{ domain_name }}.ca.crt;
         ssl_protocols TLSv1.2 TLSv1.3;
-        
+
         location ~ \.php$ {
             fastcgi_pass wordpress:9000;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
-        }   
+        }
     }
 }

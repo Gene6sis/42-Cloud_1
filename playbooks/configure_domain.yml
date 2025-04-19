@@ -1,0 +1,36 @@
+---
+- name: Configure domain and SSL
+  hosts: web
+  become: yes
+  vars_files:
+    - ../group_vars/all.yml
+
+  tasks:
+    - name: Create SSL directory in nginx container
+      file:
+        path: /opt/inception/requirements/nginx/ssl
+        state: directory
+        mode: '0755'
+
+    - name: Copy SSL certificates for nginx container
+      copy:
+        src: "{{ role_path }}/../nginx/files/ssl/{{ item }}"
+        dest: "/opt/inception/requirements/nginx/ssl/{{ item }}"
+        mode: '0644'
+      loop:
+        - "{{ domain_name }}.crt"
+        - "{{ domain_name }}.key"
+        - "{{ domain_name }}.ca.crt"
+
+    - name: Update nginx.conf in container
+      copy:
+        src: "{{ role_path }}/../nginx/templates/nginx.conf.j2"
+        dest: "/opt/inception/requirements/nginx/conf/nginx.conf"
+        mode: '0644'
+      vars:
+        domain_name: "{{ domain_name }}"
+
+    - name: Restart containers to apply changes
+      command: docker compose restart
+      args:
+        chdir: /opt/inception

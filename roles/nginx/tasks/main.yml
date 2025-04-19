@@ -1,0 +1,21 @@
+- name: Créer le dossier SSL sur le serveur
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: Copier les certificats SSL
+  copy:
+    src: "ssl/{{ item }}"
+    dest: "/etc/nginx/ssl/{{ item }}"
+    mode: '0644'
+  loop:
+    - "{{ domain_name }}.crt"
+    - "{{ domain_name }}.key"
+    - "{{ domain_name }}.ca.crt"
+
+- name: Déployer le fichier nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'

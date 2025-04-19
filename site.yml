@@ -1,0 +1,8 @@
+
+---
+# Main Ansible playbook for deploying the entire stack
+- name: Install Docker on server
+  import_playbook: playbooks/install_docker.yml
+
+- name: Deploy Inception stack
+  import_playbook: playbooks/deploy_inception.yml
