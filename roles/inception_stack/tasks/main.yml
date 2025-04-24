@@ -29,10 +29,3 @@
     mode: '0644'
     owner: root
     group: root
-
-- name: Build and start containers
-  command: docker compose up -d
-  args:
-    chdir: /opt/inception
-  async: 600  # 10 minutes timeout
-  poll: 10    # Check every 10 seconds

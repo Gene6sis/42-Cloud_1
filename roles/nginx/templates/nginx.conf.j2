@@ -11,10 +11,10 @@ http {
         server_name {{ domain_name }};
 
         root /var/www/html;
-        index index.php index.html index.htm;
+        index index.php index.html;
 
         ssl_certificate /etc/nginx/ssl/{{ domain_name }}.crt;
-        ssl_certificate_key /etc/nginx/ssl/{{ domain_name }}.key;
+        ssl_certificate_key /etc/nginx/ssl/{{ domain_name }}.nopass.key;
         ssl_trusted_certificate /etc/nginx/ssl/{{ domain_name }}.ca.crt;
         ssl_protocols TLSv1.2 TLSv1.3;
 

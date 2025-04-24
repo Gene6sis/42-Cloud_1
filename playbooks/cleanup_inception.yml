@@ -1,0 +1,38 @@
+---
+- name: Cleanup Inception environment
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Stop and remove all Docker containers
+      shell: |
+        docker container rm -f $(docker container ls -aq)
+      args:
+        executable: /bin/bash
+      ignore_errors: yes
+
+    - name: Remove all Docker images
+      shell: |
+        docker image rm -f $(docker image ls -aq)
+      args:
+        executable: /bin/bash
+      ignore_errors: yes
+
+    - name: Remove all Docker volumes
+      shell: |
+        docker volume rm $(docker volume ls -q)
+      args:
+        executable: /bin/bash
+      ignore_errors: yes
+
+    - name: Remove all user-defined Docker networks (except default ones)
+      shell: |
+        docker network rm $(docker network ls --format '{{ "{{" }}.Name{{ "}}" }}' | grep -vE '^bridge$|^host$|^none$')
+      args:
+        executable: /bin/bash
+      ignore_errors: yes
+
+    - name: Remove /opt/inception directory
+      file:
+        path: /opt/inception
+        state: absent
