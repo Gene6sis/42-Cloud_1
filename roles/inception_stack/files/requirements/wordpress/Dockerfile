@@ -9,7 +9,8 @@ RUN apt-get update -y && apt-get install -y\
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /var/run/php \
     && mkdir -p /var/www/html \
-    && chown -R www-data:www-data /var/www/html
+    && chown -R www-data:www-data /var/www/html \
+    && rm -rf /etc/apache2 
     # && chmod -R 755 /var/www/html
 
 WORKDIR /var/www/html

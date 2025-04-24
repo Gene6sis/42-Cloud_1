@@ -4,3 +4,5 @@
 
   roles:
     - ../roles/inception_stack
+    - ../roles/nginx
+    - ../roles/launch

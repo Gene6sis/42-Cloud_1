@@ -1,0 +1,10 @@
+---
+- name: Restart Docker Compose in /opt/inception
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Docker compose down
+      command: docker compose down
+      args:
+        chdir: /opt/inception
